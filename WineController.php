@@ -53,16 +53,11 @@ class WineController {
 		$request = new Request();
 	 	$data = json_decode($request->getContent(), true);
 		try{
-				$sql = "select * from wines where title like :title";				
-				$this->sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$stmt = $this->sqlite3->prepare($sql);			        
-				$stmt->execute(array('%'.$data['title'].'%'));
-				$wines = $stmt->fetchAll();
-		  } catch (PDOException $e) {
-		    echo $e->getMessage();
-		  }	
-			return json_encode($wines, true);		
-		
+			$wines = $this->wineDao->searchWine($data);		  
+		} catch (PDOException $e) {
+			return json_encode("search is not successful", true);	   
+	  }	
+		return json_encode($wines, true);	
 	}
 	
 }

@@ -54,5 +54,19 @@ class WineDaoPdo{
 		  }	
 	}
 	
+	function searchWine($data){
+		$wines = null;
+		try{
+				$sql = "select * from wines where title like :title";				
+				$this->sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$stmt = $this->sqlite3->prepare($sql);			        
+				$stmt->execute(array('%'.$data['title'].'%'));
+				$wines = $stmt->fetchAll();
+		  } catch (PDOException $e) {
+		    echo $e->getMessage();
+		  }	
+			return $wines;
+	}
+		
 }
 	
