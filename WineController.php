@@ -67,5 +67,21 @@ class WineController {
 		  }	
 			return json_encode("success", true);					
 	}
+	function searchWine(){
+		$wines = null;
+		$request = new Request();
+	 	$data = json_decode($request->getContent(), true);
+		try{
+				$sql = "select * from wines where title like :title";				
+				$this->sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$stmt = $this->sqlite3->prepare($sql);			        
+				$stmt->execute(array('%'.$data['title'].'%'));
+				$wines = $stmt->fetchAll();
+		  } catch (PDOException $e) {
+		    echo $e->getMessage();
+		  }	
+			return json_encode($wines, true);		
+		
+	}
 	
 }
