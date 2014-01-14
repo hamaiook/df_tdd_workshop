@@ -36,4 +36,20 @@ class WineController {
 			return json_encode("success", true);					
 	}
 	
+	function insertWine() {
+		 $data = json_decode($request->getContent(), true);
+		 try{
+			 		$sql = "insert into wines 
+						(title,grapes,price,country,region,year,note) 
+					  values 
+						(:title,:grapes,:price,:country,:region,:year,:note)";
+					$this->sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+					$stmt = $this->sqlite3->prepare($sql);
+					$stmt->execute($data);
+				} catch (PDOException $e) {
+			    echo $e->getMessage();
+				}	
+				return json_encode("success", true);
+	}
+	
 }
