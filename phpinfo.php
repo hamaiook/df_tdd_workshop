@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/vendor/autoload.php'; 
+require 'WineController.php';
 use Symfony\Component\HttpFoundation\Request;
 
 $app = new Silex\Application(); 
@@ -8,19 +9,7 @@ $app['debug'] = true;
 $sqlite3 = new PDO('sqlite:messaging.sqlite3');
 
 
-$app->get('/wines', function() use($app, $sqlite3) { 				
-	$wines = null;
-	try{
-			$sql = "select * from wines";
-			$sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$stmt = $sqlite3->query($sql);
-			$wines = $stmt->fetchAll(PDO::FETCH_OBJ);
-			$pdo = null;		
-	  } catch (PDOException $e) {
-	    echo $e->getMessage();
-	  }	
-		return json_encode($wines, true);					
-}); 
+$app->get('/wines', 'WineController::getAllWine');
 
 $app->delete('/wines/{id}', function($id) use($app, $sqlite3) { 				
 	$wine = null;
