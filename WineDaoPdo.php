@@ -42,5 +42,17 @@ class WineDaoPdo{
 		    echo $e->getMessage();
 			}	
 	}
+	
+	function updateWine($data){
+		try{
+				$sql = "update wines set title = :title, grapes = :grapes, price = :price, country = :country, region = :region, year = :year, note = :note where id = :id";
+				$this->sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$stmt = $this->sqlite3->prepare($sql);
+				$stmt->execute($data);	
+		  } catch (PDOException $e) {
+		    echo $e->getMessage();
+		  }	
+	}
+	
 }
 	
