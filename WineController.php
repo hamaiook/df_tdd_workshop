@@ -1,24 +1,17 @@
 <?php
-use Silex\Application;
+require_once 'WineDaoPdo.php';
 use Symfony\Component\HttpFoundation\Request;
 
 class WineController {
 	private $sqlite3 = null;
+	private $wineDao = null;
 	function __construct() {	
 		$this->sqlite3 = new PDO('sqlite:messaging.sqlite3');	
+		$this->wineDao = new WineDaoPdo();
 	}
 	 
 	function getAllWine() {
-		$wines = null;
-		try{
-				$sql = "select * from wines";
-				$this->sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$stmt = $this->sqlite3->query($sql);
-				$wines = $stmt->fetchAll(PDO::FETCH_OBJ);
-					
-		 } catch (PDOException $e) {
-		    echo $e->getMessage();
-		 }	
+		$wines = $this->wineDao->getAllWine();
 		return json_encode($wines, true);					
 	}
 	
@@ -67,7 +60,8 @@ class WineController {
 		  }	
 			return json_encode("success", true);					
 	}
-	function searchWine(){
+	
+	function searchWine() {
 		$wines = null;
 		$request = new Request();
 	 	$data = json_decode($request->getContent(), true);
