@@ -15,21 +15,7 @@ $app->delete('/wines/{id}', 'WineController::deleteWine');
 
 $app->post('/wines', 'WineController::InsertWine');
 
-$app->put('/wines/{id}', function(Request $request, $id) use($app, $sqlite3) { 
-	$data = json_decode($request->getContent(), true);
-	$data["id"] = $id;
-	var_dump($data);
-	try{
-			$sql = "update wines set title = :title, grapes = :grapes, price = :price, country = :country, region = :region, year = :year, note = :note where id = :id";
-			$sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$stmt = $sqlite3->prepare($sql);
-			$stmt->execute($data);
-			$pdo = null;		
-	  } catch (PDOException $e) {
-	    echo $e->getMessage();
-	  }	
-		return json_encode("success", true);					
-});
+$app->put('/wines/{id}', 'WineController::UpdateWine');
 
 
 $app->post('/wines/search', function(Request $request) use($app, $sqlite3) { 

@@ -53,4 +53,19 @@ class WineController {
 				return json_encode("success", true);
 	}
 	
+	function updateWine($id) {
+		$request = new Request();
+		$data = json_decode($request->getContent(), true);
+		$data["id"] = $id;
+		try{
+				$sql = "update wines set title = :title, grapes = :grapes, price = :price, country = :country, region = :region, year = :year, note = :note where id = :id";
+				$this->sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$stmt = $this->sqlite3->prepare($sql);
+				$stmt->execute($data);	
+		  } catch (PDOException $e) {
+		    echo $e->getMessage();
+		  }	
+			return json_encode("success", true);					
+	}
+	
 }
