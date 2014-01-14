@@ -11,19 +11,7 @@ $sqlite3 = new PDO('sqlite:messaging.sqlite3');
 
 $app->get('/wines', 'WineController::getAllWine');
 
-$app->delete('/wines/{id}', function($id) use($app, $sqlite3) { 				
-	$wine = null;
-	try{
-			$sql = "delete from wines where id = :id";
-			$sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$stmt = $sqlite3->prepare($sql);
-			$stmt->execute(array($id));
-			$pdo = null;		
-	  } catch (PDOException $e) {
-	    echo $e->getMessage();
-	  }	
-		return json_encode("success", true);					
-});
+$app->delete('/wines/{id}', 'WineController::deleteWine');
 
 $app->post('/wines', function(Request $request) use($app, $sqlite3) { 
 
