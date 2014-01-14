@@ -13,23 +13,7 @@ $app->get('/wines', 'WineController::getAllWine');
 
 $app->delete('/wines/{id}', 'WineController::deleteWine');
 
-$app->post('/wines', function(Request $request) use($app, $sqlite3) { 
-
- $data = json_decode($request->getContent(), true);
-	try{
-			$sql = "insert into wines 
-				(title,grapes,price,country,region,year,note) 
-			  values 
-				(:title,:grapes,:price,:country,:region,:year,:note)";
-			$sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$stmt = $sqlite3->prepare($sql);
-			$stmt->execute($data);
-			$pdo = null;		
-	  } catch (PDOException $e) {
-	    echo $e->getMessage();
-	  }	
-		return json_encode("success", true);					
-});
+$app->post('/wines', 'WineController::InsertWine');
 
 $app->put('/wines/{id}', function(Request $request, $id) use($app, $sqlite3) { 
 	$data = json_decode($request->getContent(), true);

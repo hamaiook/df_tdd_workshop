@@ -37,6 +37,7 @@ class WineController {
 	}
 	
 	function insertWine() {
+		$request = new Request();
 		 $data = json_decode($request->getContent(), true);
 		 try{
 			 		$sql = "insert into wines 
