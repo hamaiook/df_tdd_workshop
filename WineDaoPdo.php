@@ -18,5 +18,16 @@ class WineDaoPdo{
 		 }	
 		 return $wines;
 	}
+	function deleteWine($id){
+		try{
+				$sql = "delete from wines where id = :id";
+				$this->sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$stmt = $this->sqlite3->prepare($sql);
+				$stmt->execute(array($id));	
+		} catch (PDOException $e) {
+		    echo $e->getMessage();
+		}	
+		
+	}
 }
 	

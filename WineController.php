@@ -17,16 +17,12 @@ class WineController {
 	
 
 	function deleteWine($id) {
-		$wine = null;
-		try{
-				$sql = "delete from wines where id = :id";
-				$this->sqlite3->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$stmt = $this->sqlite3->prepare($sql);
-				$stmt->execute(array($id));	
-		  } catch (PDOException $e) {
-		    echo $e->getMessage();
-		  }	
-			return json_encode("success", true);					
+	  try{
+			$this->wineDao->deleteWine($id);		
+		}catch(PDOException $e){
+			return json_encode("delete is not successful", true);		
+		}
+		return json_encode("success", true);		
 	}
 	
 	function insertWine() {
