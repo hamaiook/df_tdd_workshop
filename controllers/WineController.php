@@ -2,11 +2,9 @@
 use Symfony\Component\HttpFoundation\Request;
 
 class WineController {
-	private $sqlite3 = null;
 	private $wineDao = null;
-	function __construct() {	
-		$this->sqlite3 = new PDO('sqlite:messaging.sqlite3');	
-		$this->wineDao = new WineDaoPdo();
+	function __construct($app) {		
+		$this->wineDao = $app['wineDao'];
 	}
 	 
 	function getAllWine() {

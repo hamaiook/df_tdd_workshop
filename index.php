@@ -6,17 +6,22 @@ use Symfony\Component\HttpFoundation\Request;
 
 $app = new Silex\Application(); 
 $app['debug'] = true;
-$app['WineDao'] = $app->share(function () {
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
+$app['wineDao'] = $app->share(function () {
     return new WineDaoPdo();
 });
-$app->get('/wines', 'WineController::getAllWine');
+$app['wine.controller'] = $app->share(function() use ($app) {
+    return new WineController($app);
+});
 
-$app->delete('/wines/{id}', 'WineController::deleteWine');
+$app->get('/wines', 'wine.controller:getAllWine');
 
-$app->post('/wines', 'WineController::insertWine');
+$app->delete('/wines/{id}', 'wine.controller:deleteWine');
 
-$app->put('/wines/{id}', 'WineController::updateWine');
+$app->post('/wines', 'wine.controller:insertWine');
 
-$app->post('/wines/search','WineController::searchWine'); 
+$app->put('/wines/{id}', 'wine.controller:updateWine');
+
+$app->post('/wines/search','wine.controller:searchWine'); 
 
 $app->run(); 
