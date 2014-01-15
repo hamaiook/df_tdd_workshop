@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/vendor/autoload.php'; 
-require 'WineController.php';
+require 'controllers/WineController.php';
 use Symfony\Component\HttpFoundation\Request;
 
 $app = new Silex\Application(); 

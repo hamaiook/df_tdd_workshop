@@ -1,5 +1,4 @@
 <?php
-require_once 'WineDaoPdo.php';
 use Symfony\Component\HttpFoundation\Request;
 
 class WineController {

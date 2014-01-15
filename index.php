@@ -1,11 +1,14 @@
 <?php
 require_once __DIR__.'/vendor/autoload.php'; 
-require 'WineController.php';
+require 'controllers/WineController.php';
+require 'dao/WineDaoPdo.php';
 use Symfony\Component\HttpFoundation\Request;
 
 $app = new Silex\Application(); 
 $app['debug'] = true;
-
+$app['WineDao'] = $app->share(function () {
+    return new WineDaoPdo();
+});
 $app->get('/wines', 'WineController::getAllWine');
 
 $app->delete('/wines/{id}', 'WineController::deleteWine');
